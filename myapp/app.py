@@ -1,31 +1,25 @@
-from flask import Flask, request
-from jinja2 import render_template
+from flask import Flask, request, url_for, redirect, render_template
 
 app = Flask (__name__)
 
+# HOME
 @app.route('/')
 def index():
-    return """<h1>Welcome to SLICK RICK Salon!</h1>
-            <p>We are open everyday from 10AM to 5PM.</p>
-            <p>Our services include:</p>
-            <ul>
-                <li>Haircut</li>
-                <li>Shampoo</li>
-                <li>Blowdry</li>
-            </ul>
-            <p><a href="/book">Click here to book an appointment.</a><p>
-            """
+    return render_template("home.html")
 
-@app.route('/book', methods=['GET', 'POST'])
-def book():
-    if request.method == 'GET':
-        return render_template(book.html)
+# BOOKING PAGE
+@app.route('/booking', methods=['GET', 'POST'])
+def booking():
+    if request.method == 'POST':
+        return redirect(url_for('confirmation'))
     else:
-        name = request.form ['name']
-        time = request.form ['time']
+        return render_template("booking.html")
 
-        return "<h1>Hello, {} you have booked an appointment at {}.</h1>".format(name, time)
+#CONFIRMATION PAGE
+@app.route("/confirmation")
+def confirmation():
+    return render_template("confirmation.html")
 
-
+#RUN
 if __name__ == "__main__":
     app.run(debug=True)
